@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Il Dottore — Жирный Жнец</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-deep:        #0a0e1a;
+      --bg-primary:     #0d1225;
+      --bg-secondary:   #121a35;
+      --accent-cyan:    #00d4e0;
+      --accent-blue:    #1a6fc4;
+      --accent-teal:    #0e8a8a;
+      --accent-gold:    #c9a44c;
+      --text-light:     #e8edf5;
+      --text-muted:     #8a96b0;
+      --gradient-main:  linear-gradient(135deg, #00d4e0 0%, #1a6fc4 50%, #c9a44c 100%);
+      --gradient-dark:  linear-gradient(180deg, #0d1225 0%, #121a35 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-light);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    /* ── PARTICLES CANVAS ── */
+    #particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 50px;
+      background: rgba(10, 14, 26, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0, 212, 224, 0.12);
+      transition: background .3s;
+    }
+    nav .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 900;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+    }
+    nav ul { list-style: none; display: flex; gap: 30px; }
+    nav ul li a {
+      text-decoration: none; color: var(--text-muted);
+      font-weight: 600; font-size: .95rem;
+      position: relative; transition: color .3s;
+    }
+    nav ul li a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--accent-cyan);
+      transition: width .3s;
+    }
+    nav ul li a:hover { color: var(--accent-cyan); }
+    nav ul li a:hover::after { width: 100%; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+      padding: 120px 20px 80px;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(0,212,224,.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 40%, rgba(26,111,196,.10) 0%, transparent 55%),
+        var(--gradient-dark);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background:
+        repeating-conic-gradient(from 0deg, transparent 0deg 340deg, rgba(0,212,224,.015) 340deg 360deg);
+      animation: heroSpin 60s linear infinite;
+    }
+    @keyframes heroSpin { to { transform: rotate(360deg); } }
+
+    .hero-badge {
+      position: relative; z-index: 1;
+      display: inline-block;
+      padding: 6px 22px;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 30px;
+      font-size: .8rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 24px;
+      animation: fadeDown .8s ease both;
+    }
+    .hero h1 {
+      position: relative; z-index: 1;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 1.1;
+      background: linear-gradient(180deg, #ffffff 0%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeDown 1s ease both .2s;
+    }
+    .hero h1 span {
+      display: block;
+      background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: .45em;
+      letter-spacing: 6px; text-transform: uppercase;
+      margin-top: 8px;
+    }
+    .hero p {
+      position: relative; z-index: 1;
+      max-width: 600px;
+      margin-top: 24px;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      animation: fadeDown 1s ease both .4s;
+    }
+    .hero-cta {
+      position: relative; z-index: 1;
+      margin-top: 40px;
+      animation: fadeDown 1s ease both .6s;
+    }
+    .hero-cta a {
+      display: inline-block;
+      padding: 14px 40px;
+      border: none; border-radius: 50px;
+      background: var(--gradient-main);
+      color: var(--bg-deep);
+      font-weight: 700; font-size: 1rem;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .hero-cta a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(0,212,224,.35);
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative; z-index: 1;
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem; font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .section-subtitle {
+      color: var(--text-muted);
+      max-width: 650px;
+      margin-bottom: 50px;
+      font-size: 1.05rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .about-card {
+      background: var(--bg-secondary);
+      border: 1px solid rgba(0,212,224,.1);
+      border-radius: 20px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 4px;
+      background: var(--gradient-main);
+    }
+    .about-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; margin-bottom: 12px;
+      color: var(--accent-cyan);
+    }
+    .about-card p { color: var(--text-muted); font-size: .98rem; }
+
+    .about-text p {
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      font-size: 1.02rem;
+    }
+    .about-text strong { color: var(--accent-gold); }
+
+    /* ── SEGMENTS ── */
+    .segments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .segment-card {
+      background: var(--bg-secondary);
+      border: 1px solid rgba(0,212,224,.08);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: transform .35s, border-color .35s, box-shadow .35s;
+    }
+    .segment-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 16px 40px rgba(0,212,224,.12);
+    }
+    .segment-card .seg-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem; font-weight: 900;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .segment-card .seg-name {
+      margin-top: 8px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-light);
+    }
+    .segment-card .seg-desc {
+      margin-top: 10px;
+      font-size: .88rem;
+      color: var(--text-muted);
+    }
+
+    /* ── QUOTES ── */
+    .quote-block {
+      position: relative;
+      background: var(--bg-secondary);
+      border-left: 4px solid var(--accent-cyan);
+      border-radius: 0 16px 16px 0;
+      padding: 40px 48px;
+      margin: 0 auto;
+      max-width: 800px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute; top: 10px; left: 20px;
+      font-size: 5rem;
+      font-family: 'Playfair Display', serif;
+      color: rgba(0,212,224,.15);
+      line-height: 1;
+    }
+    .quote-block p {
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--text-light);
+    }
+    .quote-block cite {
+      display: block;
+      margin-top: 16px;
+      color: var(--accent-gold);
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+      max-width: 750px;
+      margin: 0 auto;
+      padding-left: 40px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 14px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent-cyan), var(--accent-gold), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 48px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: -33px; top: 6px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 12px var(--accent-cyan);
+    }
+    .timeline-item h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--accent-gold);
+      margin-bottom: 6px;
+    }
+    .timeline-item p { color: var(--text-muted); font-size: .95rem; }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+    .stat-item {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      padding: 36px 16px;
+      border: 1px solid rgba(0,212,224,.07);
+      transition: border-color .3s;
+    }
+    .stat-item:hover { border-color: var(--accent-cyan); }
+    .stat-item .stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem; font-weight: 900;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-item .stat-label {
+      margin-top: 8px;
+      font-size: .88rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(0,212,224,.08);
+      color: var(--text-muted);
+      font-size: .85rem;
+    }
+    footer a { color: var(--accent-cyan); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      nav ul { gap: 16px; }
+      .about-grid { grid-template-columns: 1fr; gap: 30px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      section { padding: 70px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">DOTTORE</div>
+  <ul>
+    <li><a href="#about">О персонаже</a></li>
+    <li><a href="#segments">Сегменты</a></li>
+    <li><a href="#lore">Лор</a></li>
+    <li><a href="#quotes">Цитаты</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">Fatui Harbinger · Second of the Eleven</div>
+  <h1>Il Dottore<span>«Доктор» — Второй Предвестник</span></h1>
+  <p>Гениальный безумец, стирающий грань между наукой и этикой. Создатель сегментов, повелитель экспериментов и один из самых загадочных Предвестников Фатуи.</p>
+  <div class="hero-cta"><a href="#about">Узнать больше</a></div>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title">О персонаже</h2>
+  <p class="section-subtitle">Один из самых влиятельных и опасных членов организации Фатуи.</p>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <p><strong>Il Dottore</strong> — второй из Одиннадцати Предвестников Фатуи, чьё имя вселяет ужас в сердцах по всему Тейвату. Его истинное имя — <strong>Зандик</strong>, и он был изгнан из Академии Даршан за свои этически неприемлемые эксперименты.</p>
+      <p>Доттор одержим поиском «истины» и расширением границ человеческого разума. Он создал множество <strong>сегментов</strong> — копий самого себя на разных этапах жизни, каждая из которых обладает собственным сознанием, но подчиняется главному «сегменту».</p>
+      <p>Его роль в сюжете Genshin Impact раскрывается постепенно, начиная с региона Сумеру, где его тёмные эксперименты оказали глубокое влияние на судьбу Нахарпайи и самого Нахида.</p>
+    </div>
+
+    <div class="about-card">
+      <h3>Досье</h3>
+      <p><strong>Имя:</strong> Зандик (Il Dottore)</p>
+      <p><strong>Титул:</strong> «Доктор»</p>
+      <p><strong>Организация:</strong> Фатуи</p>
+      <p><strong>Ранг:</strong> Второй Предвестник</p>
+      <p><strong>Регион:</strong> Сумеру (изгнан)</p>
+      <p><strong>Особая способность:</strong> Создание сегментов</p>
+      <p><strong>Элемент:</strong> Крио (предположительно)</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEGMENTS -->
+<section id="segments">
+  <h2 class="section-title">Сегменты</h2>
+  <p class="section-subtitle">Доттор разделил себя на несколько копий, каждая из которых представляет определённый этап его жизни.</p>
+
+  <div class="segments-grid">
+    <div class="segment-card">
+      <div class="seg-num">I</div>
+      <div class="seg-name">«Молодой»</div>
+      <div class="seg-desc">Самый молодой сегмент, полный амбиций и радикальных идей. Действует в Сумеру.</div>
+    </div>
+    <div class="segment-card">
+      <div class="seg-num">II</div>
+      <div class="seg-name">«Зрелый»</div>
+      <div class="seg-desc">Более опытная версия, сочетающая знания и хладнокровие.</div>
+    </div>
+    <div class="segment-card">
+      <div class="seg-num">III</div>
+      <div class="seg-name">«Старший»</div>
+      <div class="seg-desc">Мудрый и расчётливый. Координирует действия остальных сегментов.</div>
+    </div>
+    <div class="segment-card">
+      <div class="seg-num">IV</div>
+      <div class="seg-name">«Главный»</div>
+      <div class="seg-desc">Оригинал — тот, кто стоит за всеми экспериментами и принимает окончательные решения.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section>
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-val">11</div>
+      <div class="stat-label">Предвестников</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">2</div>
+      <div class="stat-label">Ранг</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">∞</div>
+      <div class="stat-label">Экспериментов</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">4+</div>
+      <div class="stat-label">Сегментов</div>
+    </div>
+  </div>
+</section>
+
+<!-- LORE TIMELINE -->
+<section id="lore">
+  <h2 class="section-title">Хронология</h2>
+  <p class="section-subtitle">Ключевые события, связанные с Доттором.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <h4>Изгнание из Академии</h4>
+      <p>Зандик был исключён из Академии Сумеру за проведение запрещённых экспериментов над людьми и стремление к «абсолютному знанию».</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Вступление в Фатуи</h4>
+      <p>После изгнания его заметила Царица и предложила место среди Предвестников. Зандик принял титул «Доктор».</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Создание сегментов</h4>
+      <p>Доттор разработал технологию разделения сознания, создав несколько копий себя для одновременного выполнения задач.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Эксперименты в Сумеру</h4>
+      <p>Молодой сегмент проводил эксперименты, повлиявшие на судьбу Нахарпайи, а также на создание искусственного божества — Шабара.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Сделка с Нахидом</h4>
+      <p>Во время событий Сумеру Доттор заключает сделку с Малым Властелином Кусы, обменивая Гнозис на уничтожение всех сегментов.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section id="quotes">
+  <h2 class="section-title">Цитаты</h2>
+  <p class="section-subtitle">Слова, которые раскрывают истинную натуру Доктора.</p>
+
+  <div class="quote-block">
+    <p>Знание не имеет границ. Те, кто пытается их установить, просто боятся того, что лежит за ними.</p>
+    <cite>— Il Dottore</cite>
+  </div>
+  <br>
+  <div class="quote-block">
+    <p>Мораль — это инструмент слабых. Настоящие учёные смотрят дальше подобных ограничений.</p>
+    <cite>— Il Dottore</cite>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Fan-сайт создан в честь персонажа Genshin Impact — Il Dottore. Все права на персонажа принадлежат <a href="https://genshin.hoyoverse.com" target="_blank">HoYoverse</a>.</p>
+</footer>
+
+<!-- PARTICLES SCRIPT -->
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.4;
+      this.speedY = (Math.random() - 0.5) * 0.4;
+      this.opacity = Math.random() * 0.5 + 0.1;
+      this.color = ['rgba(0,212,224,', 'rgba(26,111,196,', 'rgba(201,164,76,'][Math.floor(Math.random()*3)];
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color + this.opacity + ')';
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(0,212,224,' + (0.06 * (1 - dist / 100)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+
+</body>
+</html>
